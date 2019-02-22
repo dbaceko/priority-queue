@@ -21,11 +21,11 @@ class Node {
 	}
 
 	removeChild(node) {
-		if (this.left == node){
+		if (this.left === node){
 			this.left.parent = null;
 			this.left = null;
 		}
-		else if (this.right == node){
+		else if (this.right === node){
 			this.right.parent = null;
 			this.right = null;
 		}
@@ -49,8 +49,48 @@ class Node {
 			// DO NOTHING
 		}
 		else {
-			this.parent.parent = this;
-			//FUNKTION IN DEVELOPMENT
+			if (this.parent.left === this ) {
+				if (this.parent.right) {
+					this.right = this.parent.right;
+					this.parent.right.parent = this.parent.left;
+				}
+				if(this.left) {
+					this.left.parent = this.parent;
+					this.parent.left = this.left;
+				}
+				else this.parent.left = null;
+				this.left = this.parent;
+				
+			}
+			else if (this.parent.right === this ) {
+				if (this.parent.left) {
+					this.left = this.parent.left;
+					this.parent.left.parent = this.parent.right;
+				}
+				if(this.right) {
+					this.right.parent = this.parent;
+					this.parent.right = this.right;
+				}
+				else this.parent.right = null;
+				this.right = this.parent;
+			}
+			
+			if ((this.parent.parent)&&(this.parent.parent.left === this.parent)) {
+				this.parent.parent.left = this;
+			}
+			else if ((this.parent.parent)&&(this.parent.parent.right === this.parent)) {
+				this.parent.parent.right = this;
+			}
+
+			if (!this.parent.parent){
+				this.parent.parent = this;
+				this.parent = null;
+			}
+			else if (this.parent.parent) {
+				const grandpaNode = this.parent.parent;
+				this.parent.parent = this;
+				this.parent = grandpaNode;
+			}
 		}
 	}
 }
