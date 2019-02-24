@@ -49,10 +49,19 @@ class Node {
 			// DO NOTHING
 		}
 		else {
+			if ((this.parent.parent)&&(this.parent.parent.left === this.parent)) {
+				this.parent.parent.left = this;
+			}
+			else if ((this.parent.parent)&&(this.parent.parent.right === this.parent)) {
+				this.parent.parent.right = this;
+			}
+			
+
 			if (this.parent.left === this ) {
 				if (this.parent.right) {
 					this.right = this.parent.right;
 					this.parent.right.parent = this.parent.left;
+					this.parent.right = null;
 				}
 				if(this.left) {
 					this.left.parent = this.parent;
@@ -66,6 +75,7 @@ class Node {
 				if (this.parent.left) {
 					this.left = this.parent.left;
 					this.parent.left.parent = this.parent.right;
+					this.parent.left = null;
 				}
 				if(this.right) {
 					this.right.parent = this.parent;
@@ -73,13 +83,6 @@ class Node {
 				}
 				else this.parent.right = null;
 				this.right = this.parent;
-			}
-			
-			if ((this.parent.parent)&&(this.parent.parent.left === this.parent)) {
-				this.parent.parent.left = this;
-			}
-			else if ((this.parent.parent)&&(this.parent.parent.right === this.parent)) {
-				this.parent.parent.right = this;
 			}
 
 			if (!this.parent.parent){
@@ -91,6 +94,7 @@ class Node {
 				this.parent.parent = this;
 				this.parent = grandpaNode;
 			}
+			
 		}
 	}
 }
