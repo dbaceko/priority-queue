@@ -37,7 +37,7 @@ class Node {
 
 	remove() {
 		if (!this.parent) {
-			// DO NOTHING
+			return;
 		}
 		else {
 			this.parent.removeChild(this);
@@ -46,55 +46,55 @@ class Node {
 
 	swapWithParent() {
 		if (!this.parent) {
-			// DO NOTHING
+			return;
 		}
 		else {
-			if ((this.parent.parent)&&(this.parent.parent.left === this.parent)) {
+			if ((this.parent.parent)
+			&&(this.parent.parent.left === this.parent)) {
 				this.parent.parent.left = this;
 			}
-			else if ((this.parent.parent)&&(this.parent.parent.right === this.parent)) {
+			else if ((this.parent.parent)
+			&&(this.parent.parent.right === this.parent)) {
 				this.parent.parent.right = this;
 			}
 			
-
+			if(this.left) {
+				this.left.parent = this.parent;
+			}
+			if(this.right) {
+				this.right.parent = this.parent;
+			}
+			let tpmleft;
+			let tmpRight;
 			if (this.parent.left === this ) {
 				if (this.parent.right) {
-					this.right = this.parent.right;
-					this.parent.right.parent = this.parent.left;
-					this.parent.right = null;
+					this.parent.right.parent = this;
 				}
-				if(this.left) {
-					this.left.parent = this.parent;
-					this.parent.left = this.left;
-				}
-				else this.parent.left = null;
-				this.left = this.parent;
 				
+				tpmleft = this.left;
+				this.left = this.parent;
+				this.parent.left = tpmleft;
+
+				tmpRight = this.right;
+				this.right = this.parent.right;
+				this.parent.right = tmpRight;
 			}
 			else if (this.parent.right === this ) {
 				if (this.parent.left) {
-					this.left = this.parent.left;
-					this.parent.left.parent = this.parent.right;
-					this.parent.left = null;
+					this.parent.left.parent = this;
 				}
-				if(this.right) {
-					this.right.parent = this.parent;
-					this.parent.right = this.right;
-				}
-				else this.parent.right = null;
+				tpmleft = this.left;
+				this.left = this.parent.left;
+				this.parent.left = tpmleft;
+
+				tmpRight = this.right;
 				this.right = this.parent;
+				this.parent.right = tmpRight;
 			}
 
-			if (!this.parent.parent){
-				this.parent.parent = this;
-				this.parent = null;
-			}
-			else if (this.parent.parent) {
-				const grandpaNode = this.parent.parent;
-				this.parent.parent = this;
-				this.parent = grandpaNode;
-			}
-			
+			const grandpaNode = this.parent.parent;
+			this.parent.parent = this;
+			this.parent = grandpaNode;
 		}
 	}
 }
